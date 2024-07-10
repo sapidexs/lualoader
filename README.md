@@ -4,7 +4,12 @@ use lua to handle simple http requests
 
 ## 编译
 
-+ TODO
++ Linux
+
+1. 确保正确clone了submodule。进入lua目录并执行make。 `cd lua && make && cd ..` 。
+2. 执行 `CGO_ENABLED=1 go build .` 。
+
++ Windows 暂未成功编译
 
 ## 运行
 
