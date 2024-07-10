@@ -30,14 +30,23 @@ use lua to handle simple http requests
 
 ```json
 {
-    "manifest_version": 1, // 无需修改
-    "name": "helloworld", // 插件名称
-    "entry": "main.lua", // 插件入口文件
-    "plugin_version": [1, 0, 0], // 插件版本，遵循语义化版本规范
-    "author": "odorajbotoj", // 插件作者
-    "description": "hello, world!" // 插件描述
+    "manifest_version": 1,
+    "name": "helloworld",
+    "entry": "main.lua",
+    "plugin_version": [1, 0, 0],
+    "author": "odorajbotoj",
+    "description": "hello, world!"
 }
 ```
+
+| 键名 | 含义 |
+| --- | --- |
+| `manifest_version` | 无需修改 |
+| `name` | 插件名称 |
+| `entry` | 插件入口文件 |
+| `plugin_version` | 插件版本，遵循语义化版本规范 |
+| `author` | 插件作者 |
+| `description` | 插件描述 |
 
 + 插件必须包含一个 `Enable` 函数与一个 `Disable` 函数，分别在启用和禁用时调用。这两个函数无参数，无返回值。
 + 插件必须包含一个 `HandlerTable` 表，用于注册路由。这个表以字符串为键，以函数为值。函数有一个参数，有一个返回值，均为表。
