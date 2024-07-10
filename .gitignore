@@ -1,0 +1,12 @@
+#log file
+/errlog.txt
+
+# config file
+/config.json
+
+# plugins dir
+/plugins
+
+# build
+/lualoader
+/lualoader.exe
