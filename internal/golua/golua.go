@@ -2,7 +2,8 @@ package golua
 
 /*
 #cgo CFLAGS: -I${SRCDIR}/../../lua
-#cgo LDFLAGS: -L${SRCDIR}/../../lua -llua -lm -ldl
+#cgo !windows LDFLAGS: -L${SRCDIR}/../../lua -llua -lm -ldl
+#cgo windows LDFLAGS: -L${SRCDIR}/../../lua liblua.a libm.a libdl.a
 
 #include "golua.h"
 */
