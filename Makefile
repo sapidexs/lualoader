@@ -1,0 +1,2 @@
+lualoader:
+	go build .
