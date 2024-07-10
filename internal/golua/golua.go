@@ -2,8 +2,7 @@ package golua
 
 /*
 #cgo CFLAGS: -I${SRCDIR}/../../lua
-#cgo !windows LDFLAGS: -L${SRCDIR}/../../lua -llua -lm -ldl
-#cgo windows LDFLAGS: -L${SRCDIR}/../../lua liblua.a libm.a libdl.a
+#cgo LDFLAGS: -L${SRCDIR}/../../lua -llua -lm -ldl
 
 #include "golua.h"
 */
@@ -54,7 +53,7 @@ func LuaPluginGetHandler(L *C.struct_lua_State) error {
 	var length C.int = 0
 	handlerArray := C.GetHandler(L, &length)
 	if unsafe.Pointer(handlerArray) == C.Null() {
-		return errors.New("Error in getting handler.")
+		return errors.New("Error in getting handler")
 	}
 	defer C.FreeHandlerArray(handlerArray, length)
 	for i := 0; i < int(length); i++ {
