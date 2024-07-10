@@ -26,7 +26,7 @@ use lua to handle simple http requests
 
 ## 关于Lua
 
-+ 使用cgo绑定原版lua
++ 使用cgo绑定原版lua(5.4)
 
 ## 插件系统
 
