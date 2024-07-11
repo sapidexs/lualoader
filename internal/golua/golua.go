@@ -35,7 +35,7 @@ func LuaDoFile(L *C.lua_State, path string) error {
 	defer C.free(unsafe.Pointer(p))
 	ret := C.LuaL_dofile(L, p)
 	if ret != C.LUA_OK {
-		err := errors.New("Lua Error: " + C.GoString(C.Lua_tostring(L, -1)))
+		err := errors.New("lua error: " + C.GoString(C.Lua_tostring(L, -1)))
 		C.lua_settop(L, -2)
 		return err
 	}
@@ -52,11 +52,11 @@ func LuaPluginRunEnableFunc(L *C.lua_State) error {
 	t := C.lua_getglobal(L, fn)
 	if t != C.LUA_TFUNCTION {
 		C.lua_settop(L, -2)
-		return errors.New("Lua Error: \"Enable\" is not a function")
+		return errors.New("lua error: \"Enable\" is not a function")
 	}
 	ret := C.Lua_pcall(L, 0, 0, 0)
 	if ret != C.LUA_OK {
-		err := errors.New("Lua Error: " + C.GoString(C.Lua_tostring(L, -1)))
+		err := errors.New("lua error: " + C.GoString(C.Lua_tostring(L, -1)))
 		C.lua_settop(L, -2)
 		return err
 	}
@@ -69,11 +69,11 @@ func LuaPluginRunDisableFunc(L *C.lua_State) error {
 	t := C.lua_getglobal(L, fn)
 	if t != C.LUA_TFUNCTION {
 		C.lua_settop(L, -2)
-		return errors.New("Lua Error: \"Disable\" is not a function")
+		return errors.New("lua error: \"Disable\" is not a function")
 	}
 	ret := C.Lua_pcall(L, 0, 0, 0)
 	if ret != C.LUA_OK {
-		err := errors.New("Lua Error: " + C.GoString(C.Lua_tostring(L, -1)))
+		err := errors.New("lua error: " + C.GoString(C.Lua_tostring(L, -1)))
 		C.lua_settop(L, -2)
 		return err
 	}
@@ -86,19 +86,19 @@ func LuaPluginGetHandler(L *C.lua_State) (map[string]C.int, error) {
 	t := C.lua_getglobal(L, tname)
 	if t != C.LUA_TTABLE {
 		C.lua_settop(L, -2)
-		return nil, errors.New("Lua Error: \"HandlerTable\" is not a table")
+		return nil, errors.New("lua error: \"HandlerTable\" is not a table")
 	}
 	handlerTableMap := make(map[string]C.int)
 	C.lua_pushnil(L)
 	for C.lua_next(L, -2) != 0 {
 		if C.lua_isstring(L, -2) == 0 {
 			C.lua_settop(L, -4)
-			return nil, errors.New("Lua Error: HandlerTable's key is not a string")
+			return nil, errors.New("lua error: HandlerTable's key is not a string")
 		}
 		name := C.Lua_tostring(L, -2)
 		if unsafe.Pointer(name) == C.NULL {
 			C.lua_settop(L, -4)
-			return nil, errors.New("Lua Error: cannot get HandlerTable's key")
+			return nil, errors.New("lua error: cannot get HandlerTable's key")
 		}
 		handlerTableMap[C.GoString(name)] = C.luaL_ref(L, C.LUA_REGISTRYINDEX)
 	}
@@ -181,7 +181,7 @@ func LuaPluginSetHandler(L *C.lua_State) error {
 			// call the function, the function gets a table and returns a table
 			ok := C.Lua_pcall(L, 1, 1, 0)
 			if ok != C.LUA_OK {
-				w.Write([]byte("Lua Error: " + C.GoString(C.Lua_tostring(L, -1))))
+				w.Write([]byte("lua error: " + C.GoString(C.Lua_tostring(L, -1))))
 				C.lua_settop(L, -2)
 				return
 			}
@@ -191,7 +191,7 @@ func LuaPluginSetHandler(L *C.lua_State) error {
 			t := C.lua_getfield(L, -1, HEADER)
 			if t != C.LUA_TTABLE {
 				C.lua_settop(L, -3)
-				w.Write([]byte("Lua Error: header is not a table"))
+				w.Write([]byte("lua error: header is not a table"))
 				return
 			}
 			C.lua_pushnil(L)
@@ -199,20 +199,20 @@ func LuaPluginSetHandler(L *C.lua_State) error {
 				// check value
 				if C.lua_type(L, -1) != C.LUA_TTABLE {
 					C.lua_settop(L, -5)
-					w.Write([]byte("Lua Error: header's inner value is not a table"))
+					w.Write([]byte("lua error: header's inner value is not a table"))
 					return
 				}
 				// check key
 				if C.lua_isstring(L, -2) == 0 {
 					C.lua_settop(L, -5)
-					w.Write([]byte("Lua Error: header's inner key is not a string"))
+					w.Write([]byte("lua error: header's inner key is not a string"))
 					return
 				}
 				// get key
 				key := C.Lua_tostring(L, -2)
 				if unsafe.Pointer(key) == C.NULL {
 					C.lua_settop(L, -5)
-					w.Write([]byte("Lua Error: cannot get header's inner key"))
+					w.Write([]byte("lua error: cannot get header's inner key"))
 					return
 				}
 				// get inner table
@@ -222,7 +222,7 @@ func LuaPluginSetHandler(L *C.lua_State) error {
 					val := C.Lua_tostring(L, -1)
 					if unsafe.Pointer(val) == C.NULL {
 						C.lua_settop(L, -7)
-						w.Write([]byte("Lua Error: cannot get header's inner value"))
+						w.Write([]byte("lua error: cannot get header's inner value"))
 						return
 					}
 					w.Header().Add(C.GoString(key), C.GoString(val))
@@ -238,13 +238,13 @@ func LuaPluginSetHandler(L *C.lua_State) error {
 			t = C.lua_getfield(L, -1, STATUS)
 			if t != C.LUA_TNUMBER {
 				C.lua_settop(L, -3)
-				w.Write([]byte("Lua Error: status is not a number"))
+				w.Write([]byte("lua error: status is not a number"))
 				return
 			}
 			statcode := C.Lua_tointeger(L, -1)
 			if statcode == 0 {
 				C.lua_settop(L, -3)
-				w.Write([]byte("Lua Error: bad status code"))
+				w.Write([]byte("lua error: bad status code"))
 				return
 			}
 			w.WriteHeader(int(statcode))
@@ -253,16 +253,16 @@ func LuaPluginSetHandler(L *C.lua_State) error {
 			// get ret.body
 			BODY := C.CString("body")
 			defer C.free(unsafe.Pointer(BODY))
-			t = C.lua_getfield(L, -1, BODY)
+			C.lua_getfield(L, -1, BODY)
 			if C.lua_isstring(L, -1) == 0 {
 				C.lua_settop(L, -3)
-				w.Write([]byte("Lua Error: body is not a string"))
+				w.Write([]byte("lua error: body is not a string"))
 				return
 			}
 			retbody := C.Lua_tostring(L, -1)
 			if unsafe.Pointer(retbody) == C.NULL {
 				C.lua_settop(L, -3)
-				w.Write([]byte("Lua Error: cannot get body"))
+				w.Write([]byte("lua error: cannot get body"))
 				return
 			}
 			w.Write([]byte(C.GoString(retbody)))
@@ -270,8 +270,6 @@ func LuaPluginSetHandler(L *C.lua_State) error {
 			C.lua_settop(L, -2)
 			// pop ret
 			C.lua_settop(L, -2)
-			// return
-			return
 		})
 	}
 	return nil
