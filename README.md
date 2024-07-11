@@ -9,7 +9,13 @@ use lua to handle simple http requests
 1. 确保正确clone了submodule。进入lua目录并执行make。 `cd lua && make && cd ..` 。
 2. 执行 `CGO_ENABLED=1 go build .` 。
 
-+ Windows 暂未成功编译
++ Windows
+
+1. 下载 `mingw-w64` 编译套件，并添加至环境变量
+2. 下载[dlfcn-win32](https://github.com/dlfcn-win32/dlfcn-win32)项目并编译，将 `libdl.a` 放入 `/path/to/mingw-w64/lib/` 下，将 `src/dlfcn.h` 放入 `/path/to/mingw-w64/include/` 下。
+3. 从[lua官网下载页](https://www.lua.org/download.html)下载lua并编译（ `mingw32-make.exe mingw` ），将 `src/` 下除 `Makefile` `lua.exe` `luac.exe` 外所有文件放入本项目 `lua/` 文件夹下。
+4. 设置 `CGO_ENABLED=1` 。
+5. 执行 `go build .` 。
 
 ## 运行
 
