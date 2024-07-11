@@ -71,17 +71,17 @@ func enablePlugin(pluginPath string) error {
 		return errors.New("find another plugin with the same name: " + manifest.Name)
 	}
 	golua.LuaStatePool[manifest.Name] = golua.LuaNewState()
-	ret := golua.LuaDoFile(golua.LuaStatePool[manifest.Name], path.Join(pluginPath, manifest.Entry))
-	if ret != 0 {
-		return errors.New("failed to load lua file")
+	err = golua.LuaDoFile(golua.LuaStatePool[manifest.Name], path.Join(pluginPath, manifest.Entry))
+	if err != nil {
+		return err
 	}
 
-	ret = golua.LuaPluginRunEnableFunc(golua.LuaStatePool[manifest.Name])
-	if ret != 0 {
-		return errors.New("failed to run function \"enable()\"")
+	err = golua.LuaPluginRunEnableFunc(golua.LuaStatePool[manifest.Name])
+	if err != nil {
+		return err
 	}
 
-	err = golua.LuaPluginGetHandler(golua.LuaStatePool[manifest.Name])
+	err = golua.LuaPluginSetHandler(golua.LuaStatePool[manifest.Name])
 	if err != nil {
 		return err
 	}
