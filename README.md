@@ -22,7 +22,7 @@ use lua to handle simple http requests
 
 ## 日志
 
-+ `errlog.txt` 文件为错误日志，会记录**golang侧**运行错误。
++ `errlog.txt` 文件为错误日志，会记录运行错误。
 
 ## 关于Lua
 
