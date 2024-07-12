@@ -17,6 +17,10 @@ use lua to handle simple http requests
 4. 设置 `CGO_ENABLED=1` 。
 5. 执行 `go build .` 。
 
+### Linux amd64 (Debian 12.6) 交叉编译至 RISC-V 64 (MilkV-Duo)
+
++ 详见 `riscv64-build.md` 。
+
 ## 运行
 
 + 直接运行生成的 `lualoader` 可执行文件即可。
