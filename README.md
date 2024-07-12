@@ -2,6 +2,10 @@
 
 use lua to handle simple http requests
 
+## 安装
+
++ Use Lip. `lip install github.com/sapidexs/lualoader` .
+
 ## 编译
 
 ### Linux amd64
