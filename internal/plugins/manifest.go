@@ -6,15 +6,21 @@ import (
 	"path"
 )
 
-const CURRENT_MANIFEST_VERSION uint = 1
+const CURRENT_MANIFEST_VERSION uint = 2
+
+type ManifestPlatform struct {
+	Os   []string
+	Arch []string
+}
 
 type Manifest struct {
-	ManifestVersion uint   `json:"manifest_version"`
-	Name            string `json:"name"`
-	PluginVersion   []uint `json:"plugin_version"`
-	Description     string `json:"description"`
-	Author          string `json:"author"`
-	Entry           string `json:"entry"`
+	ManifestVersion uint             `json:"manifest_version"`
+	Name            string           `json:"name"`
+	PluginVersion   []uint           `json:"plugin_version"`
+	Description     string           `json:"description"`
+	Author          []string         `json:"author"`
+	Entry           string           `json:"entry"`
+	Platform        ManifestPlatform `json:"platform"`
 }
 
 func readManifestTo(pluginPath string, m *Manifest) error {

@@ -6,6 +6,8 @@ import (
 	"lualoader/internal/golua"
 	"os"
 	"path"
+	"runtime"
+	"strings"
 )
 
 func EnablePlugins(pluginsPath string) error {
@@ -65,7 +67,31 @@ func enablePlugin(pluginPath string) error {
 		return errors.New("bad plugin version")
 	}
 
-	log.Printf("Author: %s, v%d.%d.%d\n", manifest.Author, manifest.PluginVersion[0], manifest.PluginVersion[1], manifest.PluginVersion[2])
+	flag := false
+	if len(manifest.Platform.Os) != 0 {
+		for _, os := range manifest.Platform.Os {
+			flag = (os == runtime.GOOS)
+			if flag {
+				break
+			}
+		}
+		if !flag {
+			return errors.New("unsupported os")
+		}
+	}
+	if len(manifest.Platform.Arch) != 0 {
+		for _, arch := range manifest.Platform.Arch {
+			flag = (arch == runtime.GOARCH)
+			if flag {
+				break
+			}
+		}
+		if !flag {
+			return errors.New("unsupported arch")
+		}
+	}
+
+	log.Printf("Author: %s; v%d.%d.%d\n", strings.Join(manifest.Author, ", "), manifest.PluginVersion[0], manifest.PluginVersion[1], manifest.PluginVersion[2])
 
 	if _, ok := golua.LuaStatePool[manifest.Name]; ok {
 		return errors.New("find another plugin with the same name: " + manifest.Name)
