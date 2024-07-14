@@ -21,7 +21,7 @@ var (
 
 const (
 	VERSION_MAJOR uint = 1
-	VERSION_MINOR uint = 0
+	VERSION_MINOR uint = 1
 	VERSION_PATCH uint = 0
 
 	PLUGINS_PATH string = "plugins"
