@@ -1,7 +1,7 @@
 {
     "format_version": 2,
     "tooth": "github.com/sapidexs/lualoader",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "info": {
         "name": "lualoader",
         "description": "use lua to handle simple http requests",
@@ -12,7 +12,7 @@
     },
     "platforms": [
         {
-            "asset_url": "https://github.com/sapidexs/lualoader/releases/download/v1.0.1/lualoader-windows-amd64.zip",
+            "asset_url": "https://github.com/sapidexs/lualoader/releases/download/v1.1.0/lualoader-windows-amd64.zip",
             "files": {
                 "place": [
                     {
@@ -25,7 +25,7 @@
             "goarch": "amd64"
         },
         {
-            "asset_url": "https://github.com/sapidexs/lualoader/releases/download/v1.0.1/lualoader-linux-amd64.zip",
+            "asset_url": "https://github.com/sapidexs/lualoader/releases/download/v1.1.0/lualoader-linux-amd64.zip",
             "files": {
                 "place": [
                     {
